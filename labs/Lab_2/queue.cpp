@@ -6,7 +6,7 @@
 
 class elem
 {
-public:
+	friend class prqueue;
 	uint32_t key;
 	std::string value;
 	elem(std::string val, uint32_t ke)
@@ -14,6 +14,7 @@ public:
 		key = ke;
 		value = val;
 	}
+public:
 	~elem() {};
 };
 
@@ -22,12 +23,13 @@ class prqueue
 	std::vector<elem> vec;
 	uint32_t len;
 public:
-	prqueue(elem el)
+	prqueue(std::string val, uint32_t ke)
 	{
-		vec.push_back(el);
+		elem *el = new elem(val, ke);
+		vec.push_back(*el);
 		len=1;
 	}
-	void insert(elem el);
+	void insert(std::string val, uint32_t ke);
 	std::string maximum();
 	void extractmax();
 	void print();
@@ -37,9 +39,10 @@ public:
 
 
 
-void prqueue::insert(elem el)
+void prqueue::insert(std::string val, uint32_t ke)
 {
-	this->vec.push_back(el);
+	elem *el = new elem(val, ke);
+	this->vec.push_back(*el);
 	uint32_t k = this->len;
 
 	while (this->vec[k].key > this->vec[k / 2].key)
@@ -66,7 +69,7 @@ void prqueue::extractmax()
 	this->vec.erase(this->vec.end() - 1);
 	this->len--;
 	uint32_t k = 0;
-	while(k*2+2<this->len)
+	while(k*2+2<this->len&&(this->vec[k].key < this->vec[k *2+1].key|| this->vec[k].key < this->vec[k * 2 + 2].key))
 	{
 		if (this->vec[k*2+2].key < this->vec[k * 2 + 1].key)
 		{
@@ -76,11 +79,11 @@ void prqueue::extractmax()
 		else
 		{
 			std::swap(this->vec[k], this->vec[k * 2 + 2]);
-			k = k * 2 + 1;
+			k = k * 2 + 2;
 		}
 
 	}
-	if (k * 2 + 1<this->len)
+	if (k * 2 + 1<this->len&&this->vec[k].key < this->vec[k * 2 + 1].key)
 		std::swap(this->vec[k], this->vec[k * 2 + 1]);
 }
 
@@ -89,26 +92,15 @@ void prqueue::extractmax()
 
 int main(void)
 {
-	elem el1("fff", 12);
-	elem el2("kkk", 11);
-	elem el3("ttt", 13);
-	elem el4("qqq", 1);
-	elem el5("eee", 4);
-	elem el6("www", 3);
-	elem el7("rrr", 7);
-	elem el8("uuu", 6);
-	elem el9("ooo", 20);
-
-
-	prqueue que(el1);
-	que.insert(el2);
-	que.insert(el3);
-	que.insert(el4);
-	que.insert(el5);
-	que.insert(el6);
-	que.insert(el7);
-	que.insert(el8);
-	que.insert(el9);
+	prqueue que("kdfkk", 34);
+	que.insert("kkk", 11);
+	que.insert("ttt", 13);
+	que.insert("qqq", 1);
+	que.insert("eee", 4);
+	que.insert("www", 3);
+	que.insert("rrr", 7);
+	que.insert("uuu", 6);
+	que.insert("ooo", 20);
 
 	que.print();
 	que.extractmax();
