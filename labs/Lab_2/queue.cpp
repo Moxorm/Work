@@ -68,7 +68,7 @@ std::string prqueue::maximum()
 void prqueue::extractmax()
 {
 	if (this->len==0)
-		return NULL:
+		return:
 	std::swap(this->vec[0], this->vec[this->len-1]);
 	this->vec.erase(this->vec.end() - 1);
 	this->len--;
