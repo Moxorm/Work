@@ -1,67 +1,88 @@
-#include <iostream>
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include <stdio.h>
+#include <stdint.h>
 
-using namespace std;
 
-uint32_t main(uint32_t argc, char *argv[])
+int main()
 {
-	void quick_sort(uint32_t N);
-	uint32_t N = 1000;
-	quick_sort(N);
+	void tester();
+	tester();
 
 	return 0;
 }
 
-void quick_sort(uint32_t N)
+
+void tester()
 {
-	uint32_t *Arr = (uint32_t*)malloc(N * sizeof(uint32_t));
-	for (int32_t i = 0; i<N; i++)
+	bool test(uint32_t *array_us, uint32_t len, bool pr = 1);
+
+	uint32_t test1[10] = { 3,7,4,6,10,2,5,1,9,8 };
+	printf("test1 %i\n", test(test1, 10));
+
+	uint32_t test2[1] = { 8 };
+	printf("test2 %i\n", test(test2, 1));
+
+	uint32_t test3[2] = { 7,3 };
+	printf("test3 %i\n", test(test3, 2));
+
+	uint32_t test4[3] = { 5,7,4 };
+	printf("test4 %i\n", test(test4, 3));
+
+	uint32_t test5[10] = { 1,1,1,1,1,1,1,1,1,1 };
+	printf("test5 %i\n", test(test5, 10));
+
+	uint32_t *test6 = (uint32_t*)malloc(0);
+	printf("test6 %i\n", test(test6, 0, 0));
+
+	uint32_t test7[10000];
+	for (uint32_t i = 0; i < 10000; i++)
 	{
-		Arr[i] = rand() % 1000;
-		cout << Arr[i] << " ";
+		test7[i] = rand() % 10000;
 	}
-	cout << endl;
+	printf("test7 %i\n", test(test7, 10000, 0));
 
-	void quic(uint32_t * q, uint32_t l);
-	quic(Arr, N);
-
-	for (int32_t i = 0; i<N; i++)
-		cout << Arr[i] << " ";
-	cout << endl;
-
-	free(Arr);
+	uint32_t test8[10000];
+	for (uint32_t i = 0; i < 10000; i++)
+	{
+		test8[i] = 10000 - i;
+	}
+	printf("test8 %i\n", test(test8, 10000, 0));
+	free(test6);
 }
 
-int gen(uint32_t *q, uint32_t l)
+bool test(uint32_t *array_us, uint32_t len, bool pr = 1)
 {
-	if (l < 3)
-		return q[1];
-	uint32_t A[3];
-	srand(time(NULL));
-	A[0] = q[rand() % l];
-	srand(time(NULL));
-	A[1] = q[rand() % l];
-	srand(time(NULL));
-	A[2] = q[rand() % l];
-	for (uint32_t i = 0; i < 3; i++) 
+	void quick_sort(uint32_t *Arr, uint32_t N);
+	void print(uint32_t *array_us, uint32_t len);
+	quick_sort(array_us, len);
+	if (pr)
 	{
-		for (uint32_t j = 0; j < 3 - i-1 ; j++) 
-		{
-			if (A[j] > A[j + 1]) 
-			{
-				uint32_t tmp = A[j];
-				A[j] = A[j+1];
-				A[j+1] = tmp;
-			}
-		}
+		print(array_us, len);
+		printf("\n");
 	}
-	return A[1];
+
+
+
+	for (uint32_t i = 1; i < len; i++)
+	{
+		if (array_us[i] < array_us[i - 1])
+			return false;
+	}
+	return true;
 }
 
-void quic(uint32_t * arr, uint32_t len)
+void print(uint32_t *array_us, uint32_t len)
 {
+	for (uint32_t i = 0; i < len; i++)
+		printf("%i ", array_us[i]);
+}
+
+
+void quick_sort(uint32_t *arr, uint32_t len)
+{
+	int gen(uint32_t *q, uint32_t l);
 	while (len>1)
 	{
 		uint32_t j = len - 1, i = 0;
@@ -83,15 +104,43 @@ void quic(uint32_t * arr, uint32_t len)
 		}
 		if ((j + 1) > (len - j))
 		{
-			quic(arr + j, len - j);
+			quick_sort(arr + j, len - j);
 			len = j + 1;
 		}
 		else
 		{
-			quic(arr, j + 1);
+			quick_sort(arr, j + 1);
 			arr = arr + i;
 			len = len - i;
 		}
 	}
 }
+
+int gen(uint32_t *q, uint32_t l)
+{
+	if (l < 3)
+		return q[1];
+	uint32_t A[3];
+	srand(time(NULL));
+	A[0] = q[rand() % l];
+	srand(time(NULL));
+	A[1] = q[rand() % l];
+	srand(time(NULL));
+	A[2] = q[rand() % l];
+	for (uint32_t i = 0; i < 3; i++)
+	{
+		for (uint32_t j = 0; j < 3 - i - 1; j++)
+		{
+			if (A[j] > A[j + 1])
+			{
+				uint32_t tmp = A[j];
+				A[j] = A[j + 1];
+				A[j + 1] = tmp;
+			}
+		}
+	}
+	return A[1];
+}
+
+
 
