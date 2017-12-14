@@ -4,33 +4,81 @@
 
 int main(void)
 {
-	void merge(uint32_t N);
-	uint32_t N = 100;
-	merge(N);
+	void tester();
+	tester();
 	return 0;
 }
 
-void merge(uint32_t N)
+
+void tester()
 {
-	uint32_t *array_main = new uint32_t[N];
-	for (uint32_t i = 0; i < N; i++)
-	{
-		array_main[i] = 100 - rand() % 100;
-		printf("%i ", array_main[i]);
-	}
 	int merge_sort(uint32_t *array_us, uint32_t len, uint32_t center);
-	merge_sort(array_main, N, N / 2);
+	bool test(uint32_t *array_us, uint32_t len, bool pr = 1);
 
-	printf("\n");
+	uint32_t test1[10] = { 3,7,4,6,10,2,5,1,9,8 };
+	printf("test1 %i\n", test(test1, 10));
 
-	for (uint32_t i = 0; i < N; i++)
-		printf("%i ", array_main[i]);
-	delete[] array_main;
+	uint32_t test2[1] = { 8 };
+	printf("test2 %i\n", test(test2, 1));
+
+	uint32_t test3[2] = { 7,3 };
+	printf("test3 %i\n", test(test3, 2));
+
+	uint32_t test4[3] = { 5,7,4 };
+	printf("test4 %i\n", test(test4, 3));
+
+	uint32_t test5[10] = { 1,1,1,1,1,1,1,1,1,1 };
+	printf("test5 %i\n", test(test5, 10));
+
+	uint32_t *test6 = (uint32_t*)malloc(0);
+	printf("test6 %i\n", test(test6, 0,0));
+
+	uint32_t test7[10000];
+	for (uint32_t i = 0; i < 10000; i++)
+	{
+		test7[i] = rand() % 10000;
+	}
+	printf("test7 %i\n", test(test7, 10000, 0));
+
+	uint32_t test8[10000];
+	for (uint32_t i = 0; i < 10000; i++)
+	{
+		test8[i] = 10000 - i;
+	}
+	printf("test8 %i\n", test(test8, 10000, 0));
+	free(test6);
+}
+
+bool test(uint32_t *array_us, uint32_t len, bool pr=1)
+{
+	int merge_sort(uint32_t *array_us, uint32_t len, uint32_t center);
+	void print(uint32_t *array_us, uint32_t len);
+	merge_sort(array_us, len, len / 2);
+	if (pr)
+	{
+		print(array_us, len);
+		printf("\n");
+	}
+
+
+
+	for (uint32_t i = 1; i < len; i++)
+	{
+		if (array_us[i] < array_us[i - 1])
+			return false;
+	}
+	return true;
+}
+
+void print(uint32_t *array_us, uint32_t len)
+{
+	for (uint32_t i = 0; i < len; i++)
+		printf("%i ", array_us[i]);
 }
 
 int merge_sort(uint32_t *array_us, uint32_t len, uint32_t center)
 {
-	if (len == 1)
+	if (len <= 1)
 		return 0;
 	merge_sort(array_us, center, center/2);
 	merge_sort(&array_us[center], len-center, (len - center)/2);
